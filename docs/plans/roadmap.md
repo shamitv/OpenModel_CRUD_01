@@ -34,7 +34,7 @@ C:\work\OpenModel_CRUD_01\
 ## Phase Roadmap
 
 ### Phase 1-1: Backend Foundation
-**Status**: pending
+**Status**: completed
 **Files**: `docs/plans/phase-1-1-backend-foundation/`
 - FastAPI app skeleton, SQLAlchemy config, Alembic migrations, env setup
 - **5 checkpoints**: C1 (skeleton) -> C2 (models) -> C3 (migrations) -> C4 (env) -> C5 (verify)
@@ -129,7 +129,7 @@ Phase 1-1 -> Phase 1-2 -> Phase 2-1 -> Phase 2-2 -> Phase 3
 
 | Phase | Status |
 |-------|--------|
-| Phase 1-1: Backend Foundation | pending |
+| Phase 1-1: Backend Foundation | completed |
 | Phase 1-2: Frontend Foundation | pending |
 | Phase 2-1: Backend Authentication | pending |
 | Phase 2-2: Frontend Authentication | pending |
