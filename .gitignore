@@ -221,3 +221,8 @@ __marimo__/
 .opencode/
 opencode.json
 opencode.json
+
+# Backend specific
+backend/venv/
+backend/*.db
+backend/.env
