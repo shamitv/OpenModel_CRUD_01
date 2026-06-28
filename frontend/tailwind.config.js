@@ -42,9 +42,6 @@ export default {
         inter: ["'Inter', ui-sans-serif, system-ui, sans-serif"],
         mono: ["'JetBrains Mono', 'Fira Code', ui-monospace, monospace"],
       },
-      fontSize: {
-        'button': '14px',
-      },
     },
   },
   plugins: [],
