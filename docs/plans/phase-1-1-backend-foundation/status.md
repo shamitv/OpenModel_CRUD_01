@@ -2,8 +2,8 @@
 
 | Checkpoint | Status |
 |-----------|--------|
-| C1 — Backend skeleton and FastAPI app | pending |
-| C2 — SQLAlchemy configuration and base models | pending |
-| C3 — Alembic migrations | pending |
-| C4 — Environment and project hygiene | pending |
-| C5 — Verification | pending |
+| C1 — Backend skeleton and FastAPI app | completed |
+| C2 — SQLAlchemy configuration and base models | completed |
+| C3 — Alembic migrations | completed |
+| C4 — Environment and project hygiene | completed |
+| C5 — Verification | completed |
