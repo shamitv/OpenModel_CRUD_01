@@ -2,17 +2,6 @@
 
 Guidance for AI coding agents and contributors working in this repository.
 
-## Working Branches
-
-- Create a new branch before implementing any feature or meaningful change.
-- Branch from the current parent branch unless the task explicitly says otherwise.
-- Use clear branch names, for example:
-  - `feature/survey-builder`
-  - `feature/auth-flow`
-  - `fix/response-validation`
-- After implementation is complete and verified, merge the feature branch back into its parent branch.
-- Do not merge unfinished work unless the user explicitly asks for it.
-
 ## Feature Planning
 
 For each feature, create a feature-specific planning directory under:
@@ -64,17 +53,14 @@ docs/plans/<feature-name>/IMPLEMENTATION_SUMMARY.md
 
 For every feature:
 
-1. Start from the correct parent branch.
-2. Create a new feature branch.
-3. Create `docs/plans/<feature-name>/`.
-4. Write the feature plan and TO-DO list before implementation.
-5. Commit the plan and TO-DO list.
-6. Implement the feature in meaningful, reviewable increments.
-7. Commit after each meaningful change.
-8. Run relevant tests or manual verification.
-9. Write `IMPLEMENTATION_SUMMARY.md` in the same feature planning folder.
-10. Commit the implementation summary.
-11. Merge the completed feature branch back into the parent branch.
+1. Create `docs/plans/<feature-name>/`.
+2. Write the feature plan and TO-DO list before implementation.
+3. Commit the plan and TO-DO list.
+4. Implement the feature in meaningful, reviewable increments.
+5. Commit after each meaningful change.
+6. Run relevant tests or manual verification.
+7. Write `IMPLEMENTATION_SUMMARY.md` in the same feature planning folder.
+8. Commit the implementation summary.
 
 ## Implementation Summary
 
@@ -99,4 +85,4 @@ The summary should include:
 - Do not revert unrelated changes.
 - Keep planning documents updated as the implementation evolves.
 - Prefer small, reviewable changes over large mixed commits.
-- Before merging, ensure the feature branch contains the plan, TO-DO list, implementation, verification, and implementation summary.
+- Before considering a feature complete, ensure it includes the plan, TO-DO list, implementation, verification, and implementation summary.
