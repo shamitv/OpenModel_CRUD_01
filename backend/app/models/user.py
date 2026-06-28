@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from app.database import Base
 import uuid
 from datetime import datetime, timezone
+from app.utils import hash_password, verify_password
 
 
 class User(Base):
@@ -17,6 +18,12 @@ class User(Base):
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     surveys = relationship('Survey', back_populates='creator', cascade='all, delete-orphan')
+
+    def hash_password(self, password: str) -> None:
+        self.hashed_password = hash_password(password)
+
+    def verify_password(self, password: str) -> bool:
+        return verify_password(password, self.hashed_password)
 
     def to_dict(self):
         return {
