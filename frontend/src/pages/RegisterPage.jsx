@@ -26,13 +26,17 @@ function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-canvas">
-      <div className="card w-full max-w-md">
-        <h2 className="text-title-lg font-semibold mb-6">Register</h2>
-        {error && <div className="mb-4 p-3 bg-error-soft text-error rounded-md text-sm">{error}</div>}
+    <div className="min-h-screen flex items-center justify-center bg-canvas px-4 py-12">
+      <div className="card w-full max-w-md mx-auto">
+        <h2 className="text-title-lg font-semibold mb-8">Register</h2>
+        {error && (
+          <div className="mb-6 p-3 bg-error-soft text-error rounded-md text-body-sm" role="alert">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-body-sm mb-2" htmlFor="username">Username</label>
+          <div className="mb-6">
+            <label className="block text-body-sm font-medium mb-2" htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
@@ -40,10 +44,11 @@ function RegisterPage() {
               onChange={(e) => setUsername(e.target.value)}
               className="input-field"
               required
+              autoComplete="username"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-body-sm mb-2" htmlFor="email">Email</label>
+          <div className="mb-6">
+            <label className="block text-body-sm font-medium mb-2" htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
@@ -51,10 +56,11 @@ function RegisterPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="input-field"
               required
+              autoComplete="email"
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-body-sm mb-2" htmlFor="password">Password</label>
+          <div className="mb-8">
+            <label className="block text-body-sm font-medium mb-2" htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
@@ -62,14 +68,18 @@ function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="input-field"
               required
+              autoComplete="new-password"
             />
           </div>
           <button type="submit" className="btn-primary w-full" disabled={loading}>
             {loading ? 'Creating account...' : 'Register'}
           </button>
         </form>
-        <p className="text-center text-body-sm mt-6">
-          Already have an account? <Link to="/login" className="text-primary hover:underline">Login</Link>
+        <p className="text-center text-body-sm mt-8">
+          Already have an account?{' '}
+          <Link to="/login" className="text-primary hover:underline font-medium">
+            Login
+          </Link>
         </p>
       </div>
     </div>

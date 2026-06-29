@@ -30,16 +30,16 @@ api.interceptors.response.use(
 );
 
 export const authApi = {
-  register: (data: { username: string; email: string; password: string }) => {
+  register(data) {
     return api.post('/api/auth/register', data);
   },
-  login: (data: { username: string; password: string }) => {
+  login(data) {
     return api.post('/api/auth/login', data);
   },
-  logout: () => {
+  logout() {
     return api.post('/api/auth/logout');
   },
-  getCurrentUser: () => {
+  getCurrentUser() {
     return api.get('/api/auth/me');
   },
 };

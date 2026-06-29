@@ -25,13 +25,17 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-canvas">
-      <div className="card w-full max-w-md">
-        <h2 className="text-title-lg font-semibold mb-6">Login</h2>
-        {error && <div className="mb-4 p-3 bg-error-soft text-error rounded-md text-sm">{error}</div>}
+    <div className="min-h-screen flex items-center justify-center bg-canvas px-4 py-12">
+      <div className="card w-full max-w-md mx-auto">
+        <h2 className="text-title-lg font-semibold mb-8">Login</h2>
+        {error && (
+          <div className="mb-6 p-3 bg-error-soft text-error rounded-md text-body-sm" role="alert">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-body-sm mb-2" htmlFor="username">Username</label>
+          <div className="mb-6">
+            <label className="block text-body-sm font-medium mb-2" htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
@@ -39,10 +43,11 @@ function LoginPage() {
               onChange={(e) => setUsername(e.target.value)}
               className="input-field"
               required
+              autoComplete="username"
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-body-sm mb-2" htmlFor="password">Password</label>
+          <div className="mb-8">
+            <label className="block text-body-sm font-medium mb-2" htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
@@ -50,14 +55,18 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="input-field"
               required
+              autoComplete="current-password"
             />
           </div>
           <button type="submit" className="btn-primary w-full" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <p className="text-center text-body-sm mt-6">
-          Don't have an account? <Link to="/register" className="text-primary hover:underline">Register</Link>
+        <p className="text-center text-body-sm mt-8">
+          Don't have an account?{' '}
+          <Link to="/register" className="text-primary hover:underline font-medium">
+            Register
+          </Link>
         </p>
       </div>
     </div>
