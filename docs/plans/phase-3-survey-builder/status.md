@@ -20,7 +20,7 @@
 | C5b — PATCH /api/surveys/{id}/questions/reorder (bulk) | ✅ completed | |
 | C5c — PATCH /api/surveys/{id}/questions/{id}/move-up | ✅ completed | Raw SQL swap |
 | C5d — PATCH /api/surveys/{id}/questions/{id}/move-down | ✅ completed | Raw SQL swap |
-| C6a — surveyApi.js (axios service) | ✅ completed | 9 endpoints, auth interceptors |
+| C6a — surveyApi.js (axios service) | ✅ completed | 10 endpoints, auth interceptors |
 | C6b — surveyStore.js (migrate to axios) | ✅ completed | All actions migrated |
 | C6c — SurveyBuilderPage (three-zone layout) | ✅ completed | Left sidebar, center canvas, right settings |
 | C6d — SurveyBuilderHeader (title, description, save state) | ✅ completed | Auto-save debounce 2s |

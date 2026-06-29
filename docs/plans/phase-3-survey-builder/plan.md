@@ -228,7 +228,8 @@ Phase 3: Survey Builder
   - reorderQuestions(surveyId, questionIds) — PATCH /api/surveys/{id}/questions/reorder
   - moveQuestionUp(surveyId, questionId) — PATCH /api/surveys/{id}/questions/{id}/move-up
   - moveQuestionDown(surveyId, questionId) — PATCH /api/surveys/{id}/questions/{id}/move-down
-- **Commit**: `feat: add survey API service`
+  - deleteQuestion(surveyId, questionId) — DELETE /api/surveys/{id}/questions/{id}
+- **Commits**: `feat: add survey API service`, `fix: correct deleteQuestion API URL` (`ccf00a8`)
 
 #### C6b: surveyStore.js — Migrate to Axios
 **Files**: `frontend/src/store/surveyStore.js`
@@ -243,8 +244,9 @@ Phase 3: Survey Builder
   - reorderQuestions(surveyId, questionIds) — calls reorderQuestions()
   - moveQuestionUp(surveyId, questionId) — calls moveQuestionUp()
   - moveQuestionDown(surveyId, questionId) — calls moveQuestionDown()
+  - deleteQuestion(surveyId, questionId) — calls deleteQuestion()
 - Keep setCurrentSurvey action
-- **Commit**: `feat: migrate surveyStore to axios`
+- **Commits**: `feat: migrate surveyStore to axios`, `fix: resolve phase 3 known issues` (`2087a50`), `fix: correct deleteQuestion API URL` (`ccf00a8`)
 
 #### C6c: SurveyBuilderPage — Three-Zone Layout
 **Files**: `frontend/src/pages/SurveyBuilderPage.jsx`
@@ -413,10 +415,7 @@ C8a -> C8b -> C8c -> C8d -> C8e
 - **Auto-save**: Debounced 2-second timer on title/description changes in `SurveyBuilderPage.jsx`
 
 ### Known Issues / Follow-Up Tasks
-- **Failing test**: `test_move_question_down` — assertion error (expected Q3 at position 1, got different result). Move-down logic uses raw SQL `update()` with saved old positions, but the test still fails. Needs investigation.
-- **Import cleanup**: `survey.py` imports `sqlalchemy_update` but uses `update` — remove unused import alias.
 - **Frontend store consistency**: `SurveyBuilderPage.jsx` manages question state locally via `useSurveyStore.getState().addQuestion()` and `reorderQuestions()` but the backend commit may not reflect in the store until a fresh fetch.
-- **Error in move-up endpoint**: `from sqlalchemy.orm import relationship` import exists but `sqlalchemy.update()` is used — verify imports are correct.
-- **Cascade delete**: `DELETE /api/surveys/{id}` uses SQLAlchemy cascade delete (already configured in models), but the test `test_delete_survey_cascade` expects a 404 after delete — needs verification.
-- **Frontend store method**: `useSurveyStore.getState().deleteQuestion()` is called in `QuestionCard.jsx` but the method was just added to the store — needs verification.
 - **Frontend auto-save**: Debounced 2-second timer on title/description changes in `SurveyBuilderPage.jsx` — verify auto-save works correctly.
+- **Frontend smoke tests (C8b–C8d)**: Create survey, reorder questions, and preview mode smoke tests not yet written.
+- **Playwright E2E tests (C8e)**: Full E2E flow for builder not yet written.

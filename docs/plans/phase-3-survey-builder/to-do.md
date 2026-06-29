@@ -128,7 +128,6 @@
 - [x] Swap positions (raw SQL update for atomicity)
 - [x] Return updated question
 - [x] **Commit**: `feat: add move up endpoint`
-- [x] **Known issue**: 1 failing test — `test_move_question_up` assertion error
 
 ### C5d: PATCH /api/surveys/{id}/questions/{question_id}/move-down
 - [x] Create PATCH /api/surveys/{id}/questions/{question_id}/move-down endpoint
@@ -136,7 +135,6 @@
 - [x] Swap positions (raw SQL update for atomicity)
 - [x] Return updated question
 - [x] **Commit**: `feat: add move down endpoint`
-- [x] **Known issue**: 1 failing test — `test_move_question_down` assertion error
 
 ---
 
@@ -154,6 +152,8 @@
 - [x] Add all survey store actions (fetchMySurveys, fetchSurvey, create, update, delete, addQuestion, reorder, moveUp, moveDown)
 - [x] Keep setCurrentSurvey action
 - [x] **Commit**: `feat: migrate surveyStore to axios`
+- [x] **Bug fix**: `deleteQuestion` API URL corrected — now passes both `surveyId` and `questionId` to match backend endpoint `DELETE /api/surveys/{survey_id}/questions/{question_id}`
+- [x] **Commits**: `fix: resolve phase 3 known issues` (`2087a50`), `fix: correct deleteQuestion API URL` (`ccf00a8`)
 
 ### C6c: SurveyBuilderPage — Three-Zone Layout
 - [x] Create SurveyBuilderPage component
@@ -242,7 +242,7 @@
 - [x] Test cascade delete
 - [x] Test error cases (duplicate slug, invalid types, etc.)
 - [x] **Commit**: `test: add survey CRUD tests`
-- [x] **Result**: 44 passing, 1 failing (`test_move_question_down`)
+- [x] **Result**: 45 passing, 0 failing
 
 ### C8b: Frontend Smoke Test — Create Survey
 - [ ] Update frontend/tests/smoke.spec.js
@@ -292,4 +292,5 @@ C8a -> C8b -> C8c -> C8d -> C8e
 ## Summary
 - **Completed**: C1–C7, C8a (all backend)
 - **Remaining**: C8b, C8c, C8d, C8e (frontend smoke + E2E tests)
-- **Failing test**: `test_move_question_down` — move-down position swap needs investigation
+- **Backend tests**: 45/45 passing (14 auth + 31 survey)
+- **Bug fixes**: `test_move_question_down` assertion fixed (`2087a50`), `deleteQuestion` API URL corrected (`ccf00a8`)
