@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic import BaseModel, Field, EmailStr
 
 from app.database import get_db
+from app.deps import get_current_user
 from app.models.user import User
 from app.schemas import RegisterRequest, LoginRequest, MessageResponse
 from app.utils import create_access_token, verify_password
@@ -82,6 +83,14 @@ def logout(
     return {"message": "Logged out successfully"}
 
 
+@router.get("/me", response_model=dict)
+def get_current_user(
+    current_user: User = Depends(get_current_user),
+):
+    """Return the current authenticated user."""
+    return current_user.to_dict()
+
+
 @router.post("/refresh", response_model=dict)
 def refresh_token(
     refresh_token: str = None,
@@ -91,8 +100,8 @@ def refresh_token(
     if not refresh_token:
         raise HTTPException(status_code=400, detail="Refresh token required")
 
-    # Verify the refresh token is valid (client-side validation)
-    # In production, store refresh tokens in DB or use httpOnly cookies
+    # In production, validate refresh token against stored tokens
+    # For now, issue a new access token
     new_access_token = create_access_token(
         data={"sub": "refreshed", "username": "refreshed"},
     )

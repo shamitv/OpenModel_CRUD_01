@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { authApi } from '../services/authApi';
 
 const initialState = {
   user: null,
@@ -8,13 +9,11 @@ const initialState = {
 
 export const useAuthStore = create((set) => ({
   ...initialState,
+  setUser: (user) => set({ user, isAuthenticated: !!user }),
+  setToken: (token) => set({ token }),
   login: async (username, password) => {
-    const response = await fetch('http://localhost:6030/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await response.json();
+    const response = await authApi.login({ username, password });
+    const data = response.data;
     if (response.ok) {
       set({ user: data.user, token: data.token, isAuthenticated: true });
       localStorage.setItem('token', data.token);
@@ -24,12 +23,8 @@ export const useAuthStore = create((set) => ({
     }
   },
   register: async (email, password, username) => {
-    const response = await fetch('http://localhost:6030/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, username }),
-    });
-    const data = await response.json();
+    const response = await authApi.register({ username, email, password });
+    const data = response.data;
     if (response.ok) {
       set({ user: data.user, token: data.token, isAuthenticated: true });
       localStorage.setItem('token', data.token);
