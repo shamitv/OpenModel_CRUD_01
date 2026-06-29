@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from logging.config import dictConfig
 from app.api.auth import router as auth_router
+from app.api.survey import router as survey_router
 
 dictConfig({
     'version': 1,
@@ -48,6 +49,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(survey_router)
 
 @app.get('/health', tags=['Health'])
 async def health_check():

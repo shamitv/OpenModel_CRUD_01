@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { surveyApi } from '../services/surveyApi';
 
 const initialState = {
   surveys: [],
@@ -10,78 +11,119 @@ export const useSurveyStore = create((set, get) => ({
   ...initialState,
   fetchSurveys: async () => {
     set({ isLoading: true });
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:6030/api/surveys/my', {
-      headers: { Authorization: 'Bearer ' + token },
-    });
-    const data = await response.json();
-    if (response.ok) {
-      set({ surveys: data, isLoading: false });
-    } else {
+    try {
+      const response = await surveyApi.getMySurveys();
+      set({ surveys: response.data.surveys || [], isLoading: false });
+    } catch (err) {
       set({ isLoading: false });
-      throw new Error(data.detail || 'Failed to fetch surveys');
+      throw err;
     }
   },
   fetchSurvey: async (id) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:6030/api/surveys/' + id, {
-      headers: { Authorization: 'Bearer ' + token },
-    });
-    const data = await response.json();
-    if (response.ok) {
-      set({ currentSurvey: data });
-    } else {
-      throw new Error(data.detail || 'Failed to fetch survey');
+    try {
+      const response = await surveyApi.getSurvey(id);
+      set({ currentSurvey: response.data });
+    } catch (err) {
+      throw err;
     }
   },
   createSurvey: async (title, description) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:6030/api/surveys', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
-      body: JSON.stringify({ title, description }),
-    });
-    const data = await response.json();
-    if (response.ok) {
+    try {
+      const response = await surveyApi.createSurvey({ title, description });
       const surveys = get().surveys;
-      set({ surveys: [...surveys, data], currentSurvey: data });
-    } else {
-      throw new Error(data.detail || 'Failed to create survey');
+      set({ surveys: [...surveys, response.data], currentSurvey: response.data });
+      return response.data;
+    } catch (err) {
+      throw err;
     }
   },
   updateSurvey: async (id, data) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:6030/api/surveys/' + id, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
-      body: JSON.stringify(data),
-    });
-    const surveyData = await response.json();
-    if (response.ok) {
-      const surveys = get().surveys.map((s) => (s.id === id ? surveyData : s));
-      set({ surveys, currentSurvey: surveyData });
-    } else {
-      throw new Error(surveyData.detail || 'Failed to update survey');
+    try {
+      const response = await surveyApi.updateSurvey(id, data);
+      const surveys = get().surveys.map((s) => (s.id === id ? response.data : s));
+      set({ surveys, currentSurvey: response.data });
+      return response.data;
+    } catch (err) {
+      throw err;
     }
   },
   deleteSurvey: async (id) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:6030/api/surveys/' + id, {
-      method: 'DELETE',
-      headers: { Authorization: 'Bearer ' + token },
-    });
-    if (response.ok) {
+    try {
+      await surveyApi.deleteSurvey(id);
       const surveys = get().surveys.filter((s) => s.id !== id);
-      set({ surveys: surveys, currentSurvey: surveys.find((s) => s.id === id) || null });
-    } else {
-      throw new Error('Failed to delete survey');
+      set({ surveys, currentSurvey: surveys.find((s) => s.id === id) || null });
+    } catch (err) {
+      throw err;
     }
   },
   setCurrentSurvey: (survey) => set({ currentSurvey: survey }),
+  addQuestion: async (surveyId, questionData) => {
+    try {
+      const response = await surveyApi.addQuestion(surveyId, questionData);
+      const current = get().currentSurvey;
+      if (current) {
+        const questions = [...(current.questions || []), response.data];
+        set({ currentSurvey: { ...current, questions } });
+      }
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  },
+  reorderQuestions: async (surveyId, questionIds) => {
+    try {
+      const response = await surveyApi.reorderQuestions(surveyId, questionIds);
+      const current = get().currentSurvey;
+      if (current) {
+        set({ currentSurvey: { ...current, questions: response.data.questions } });
+      }
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  },
+  moveQuestionUp: async (surveyId, questionId) => {
+    try {
+      const response = await surveyApi.moveQuestionUp(surveyId, questionId);
+      const current = get().currentSurvey;
+      if (current) {
+        const questions = current.questions || [];
+        const idx = questions.findIndex((q) => q.id === questionId);
+        if (idx > 0) {
+          [questions[idx - 1], questions[idx]] = [questions[idx], questions[idx - 1]];
+          set({ currentSurvey: { ...current, questions } });
+        }
+      }
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  },
+  moveQuestionDown: async (surveyId, questionId) => {
+    try {
+      const response = await surveyApi.moveQuestionDown(surveyId, questionId);
+      const current = get().currentSurvey;
+      if (current) {
+        const questions = current.questions || [];
+        const idx = questions.findIndex((q) => q.id === questionId);
+        if (idx >= 0 && idx < questions.length - 1) {
+          [questions[idx], questions[idx + 1]] = [questions[idx + 1], questions[idx]];
+          set({ currentSurvey: { ...current, questions } });
+        }
+      }
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteQuestion: async (questionId) => {
+    const current = get().currentSurvey;
+    if (!current) return;
+    try {
+      const questions = current.questions.filter((q) => q.id !== questionId);
+      set({ currentSurvey: { ...current, questions } });
+    } catch (err) {
+      throw err;
+    }
+  },
 }));

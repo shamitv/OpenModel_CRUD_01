@@ -14,6 +14,9 @@ class Question(Base):
     question_type = Column(String(50), nullable=False)
     position = Column(Integer, default=0, nullable=False)
     required = Column(Integer, default=0, nullable=False)
+    options = Column(Text, nullable=True)  # JSON-encoded list of option strings
+    min = Column(Integer, nullable=True)  # rating min (1-5)
+    max = Column(Integer, nullable=True)  # rating max (1-5)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     survey = relationship('Survey', back_populates='questions')
@@ -27,5 +30,8 @@ class Question(Base):
             'question_type': self.question_type,
             'position': self.position,
             'required': bool(self.required),
+            'options': self.options,
+            'min': self.min,
+            'max': self.max,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }

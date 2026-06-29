@@ -5,6 +5,8 @@ import Layout from './layouts/Layout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import SurveyBuilderPage from './pages/SurveyBuilderPage';
+import SurveyPreviewPage from './pages/SurveyPreviewPage';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuthStore();
@@ -29,6 +31,28 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/builder"
+          element={
+            <ProtectedRoute>
+              <SurveyBuilderPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/builder/:id"
+          element={
+            <ProtectedRoute>
+              <SurveyBuilderPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/preview/:id"
+          element={
+            <SurveyPreviewPage />
+          }
+        />
         <Route
           path="/*"
           element={
