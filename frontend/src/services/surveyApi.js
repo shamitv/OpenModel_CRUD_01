@@ -59,8 +59,8 @@ export const surveyApi = {
   moveQuestionDown(surveyId, questionId) {
     return api.patch(`/api/surveys/${surveyId}/questions/${questionId}/move-down`);
   },
-  deleteQuestion(questionId) {
-    return api.delete(`/api/questions/${questionId}`);
+  deleteQuestion(surveyId, questionId) {
+    return api.delete(`/api/surveys/${surveyId}/questions/${questionId}`);
   },
 };
 

@@ -106,9 +106,9 @@ export const useSurveyStore = create((set, get) => ({
       throw err;
     }
   },
-  deleteQuestion: async (questionId) => {
+  deleteQuestion: async (surveyId, questionId) => {
     try {
-      await surveyApi.deleteQuestion(questionId);
+      await surveyApi.deleteQuestion(surveyId, questionId);
       const current = get().currentSurvey;
       if (!current) return;
       const questions = current.questions.filter((q) => q.id !== questionId);

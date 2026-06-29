@@ -13,7 +13,7 @@ export default function QuestionActions({ question, index }) {
 
   const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this question?')) {
-      useSurveyStore.getState().deleteQuestion(question.id);
+      useSurveyStore.getState().deleteQuestion(question.survey_id, question.id);
     }
   };
 

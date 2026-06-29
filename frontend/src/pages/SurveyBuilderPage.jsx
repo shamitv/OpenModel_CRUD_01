@@ -93,7 +93,7 @@ export default function SurveyBuilderPage() {
 
   const handleDelete = (questionId) => {
     if (window.confirm('Are you sure you want to delete this question?')) {
-      useSurveyStore.getState().deleteQuestion(questionId);
+      useSurveyStore.getState().deleteQuestion(currentSurvey.id, questionId);
     }
   };
 
