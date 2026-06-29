@@ -86,3 +86,7 @@ The summary should include:
 - Keep planning documents updated as the implementation evolves.
 - Prefer small, reviewable changes over large mixed commits.
 - Before considering a feature complete, ensure it includes the plan, TO-DO list, implementation, verification, and implementation summary.
+
+## Infrastructure
+
+For instructions on starting and stopping project components (backend, frontend, database), see [docs/infra.md](docs/infra.md).
