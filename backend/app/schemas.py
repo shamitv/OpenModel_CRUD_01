@@ -114,7 +114,7 @@ class QuestionResponse(BaseModel):
 
 
 class QuestionListResponse(BaseModel):
-    questions: List[QuestionResponse]
+    questions: list
 
 
 # --- Auth Schemas ---

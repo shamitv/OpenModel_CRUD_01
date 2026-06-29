@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, update
 from typing import List
 
 from app.database import get_db
@@ -8,6 +8,7 @@ from app.deps import get_current_user
 from app.models.survey import Survey
 from app.models.question import Question
 from app.schemas import (
+    slugify,
     SurveyCreateRequest,
     SurveyUpdateRequest,
     SurveyResponse,
@@ -17,6 +18,10 @@ from app.schemas import (
     QuestionResponse,
     QuestionListResponse,
 )
+
+
+def _questions_to_list(questions: List[Question]) -> dict:
+    return {"questions": [q.to_dict() for q in questions]}
 
 router = APIRouter(prefix="/api/surveys", tags=["Surveys"])
 
@@ -147,7 +152,7 @@ def delete_survey(
     db.commit()
 
 
-@router.get("/{survey_id}/questions", response_model=QuestionListResponse)
+@router.get("/{survey_id}/questions")
 def get_questions(
     survey_id: int,
     db: Session = Depends(get_db),
@@ -165,7 +170,7 @@ def get_questions(
         Question.survey_id == survey_id
     ).order_by(Question.position).all()
 
-    return QuestionListResponse(questions=[q.to_dict() for q in questions])
+    return _questions_to_list(questions)
 
 
 @router.post("/{survey_id}/questions", response_model=QuestionResponse, status_code=status.HTTP_201_CREATED)
@@ -238,7 +243,7 @@ def create_question(
     return question.to_dict()
 
 
-@router.patch("/{survey_id}/questions/reorder", response_model=List[QuestionResponse])
+@router.patch("/{survey_id}/questions/reorder")
 def reorder_questions(
     survey_id: int,
     question_ids: List[int] = Query(..., description="List of question IDs in desired order"),
@@ -269,10 +274,10 @@ def reorder_questions(
         Question.survey_id == survey_id
     ).order_by(Question.position).all()
 
-    return QuestionListResponse(questions=[q.to_dict() for q in questions])
+    return _questions_to_list(questions)
 
 
-@router.patch("/{survey_id}/questions/{question_id}/move-up", response_model=QuestionResponse)
+@router.patch("/{survey_id}/questions/{question_id}/move-up")
 def move_question_up(
     survey_id: int,
     question_id: int,
@@ -300,16 +305,26 @@ def move_question_up(
     if not above:
         raise HTTPException(status_code=400, detail="Cannot move up: already at top")
 
-    # Swap positions
-    db.query(Question).filter(Question.id == question_id).update({'position': question.position - 1})
-    db.query(Question).filter(Question.id == above.id).update({'position': question.position})
+    # Use raw SQL to swap positions atomically
+    old_q_pos = question.position
+    old_above_pos = above.position
+    db.execute(
+        update(Question)
+        .where(Question.id == question_id)
+        .values(position=above.position)
+    )
+    db.execute(
+        update(Question)
+        .where(Question.id == above.id)
+        .values(position=old_q_pos)
+    )
 
     db.commit()
-    db.refresh(question)
-    return question.to_dict()
+    moved = db.query(Question).filter(Question.id == question_id).first()
+    return moved.to_dict() if moved else question.to_dict()
 
 
-@router.patch("/{survey_id}/questions/{question_id}/move-down", response_model=QuestionResponse)
+@router.patch("/{survey_id}/questions/{question_id}/move-down")
 def move_question_down(
     survey_id: int,
     question_id: int,
@@ -337,10 +352,19 @@ def move_question_down(
     if not below:
         raise HTTPException(status_code=400, detail="Cannot move down: already at bottom")
 
-    # Swap positions
-    db.query(Question).filter(Question.id == question_id).update({'position': question.position + 1})
-    db.query(Question).filter(Question.id == below.id).update({'position': question.position})
+    # Use raw SQL to swap positions atomically
+    old_q_pos = question.position
+    db.execute(
+        update(Question)
+        .where(Question.id == question_id)
+        .values(position=below.position)
+    )
+    db.execute(
+        update(Question)
+        .where(Question.id == below.id)
+        .values(position=old_q_pos)
+    )
 
     db.commit()
-    db.refresh(question)
-    return question.to_dict()
+    moved = db.query(Question).filter(Question.id == question_id).first()
+    return moved.to_dict() if moved else question.to_dict()

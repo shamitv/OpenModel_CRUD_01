@@ -23,6 +23,13 @@ class Question(Base):
     answers = relationship('Answer', back_populates='question', cascade='all, delete-orphan')
 
     def to_dict(self):
+        options = self.options
+        if options is not None:
+            import json
+            try:
+                options = json.loads(options)
+            except (json.JSONDecodeError, TypeError):
+                options = []
         return {
             'id': self.id,
             'survey_id': self.survey_id,
@@ -30,7 +37,7 @@ class Question(Base):
             'question_type': self.question_type,
             'position': self.position,
             'required': bool(self.required),
-            'options': self.options,
+            'options': options,
             'min': self.min,
             'max': self.max,
             'created_at': self.created_at.isoformat() if self.created_at else None,
