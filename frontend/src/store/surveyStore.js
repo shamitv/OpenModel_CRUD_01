@@ -87,12 +87,7 @@ export const useSurveyStore = create((set, get) => ({
       const response = await surveyApi.moveQuestionUp(surveyId, questionId);
       const current = get().currentSurvey;
       if (current) {
-        const questions = current.questions || [];
-        const idx = questions.findIndex((q) => q.id === questionId);
-        if (idx > 0) {
-          [questions[idx - 1], questions[idx]] = [questions[idx], questions[idx - 1]];
-          set({ currentSurvey: { ...current, questions } });
-        }
+        set({ currentSurvey: { ...current, questions: response.data.questions } });
       }
       return response.data;
     } catch (err) {
@@ -104,12 +99,7 @@ export const useSurveyStore = create((set, get) => ({
       const response = await surveyApi.moveQuestionDown(surveyId, questionId);
       const current = get().currentSurvey;
       if (current) {
-        const questions = current.questions || [];
-        const idx = questions.findIndex((q) => q.id === questionId);
-        if (idx >= 0 && idx < questions.length - 1) {
-          [questions[idx], questions[idx + 1]] = [questions[idx + 1], questions[idx]];
-          set({ currentSurvey: { ...current, questions } });
-        }
+        set({ currentSurvey: { ...current, questions: response.data.questions } });
       }
       return response.data;
     } catch (err) {
@@ -117,9 +107,10 @@ export const useSurveyStore = create((set, get) => ({
     }
   },
   deleteQuestion: async (questionId) => {
-    const current = get().currentSurvey;
-    if (!current) return;
     try {
+      await surveyApi.deleteQuestion(questionId);
+      const current = get().currentSurvey;
+      if (!current) return;
       const questions = current.questions.filter((q) => q.id !== questionId);
       set({ currentSurvey: { ...current, questions } });
     } catch (err) {

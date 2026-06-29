@@ -368,3 +368,25 @@ def move_question_down(
     db.commit()
     moved = db.query(Question).filter(Question.id == question_id).first()
     return moved.to_dict() if moved else question.to_dict()
+
+
+@router.delete("/{survey_id}/questions/{question_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_question(
+    survey_id: int,
+    question_id: int,
+    db: Session = Depends(get_db),
+    current_user: object = Depends(get_current_user),
+):
+    """Delete a question from a survey."""
+    question = db.query(Question).filter(
+        Question.id == question_id,
+        Question.survey_id == survey_id,
+    ).first()
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    if survey.creator_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    db.delete(question)
+    db.commit()

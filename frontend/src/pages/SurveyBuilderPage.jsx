@@ -98,21 +98,11 @@ export default function SurveyBuilderPage() {
   };
 
   const handleMoveUp = (questionId) => {
-    const questions = currentSurvey.questions || [];
-    const idx = questions.findIndex((q) => q.id === questionId);
-    if (idx > 0) {
-      [questions[idx - 1], questions[idx]] = [questions[idx], questions[idx - 1]];
-      useSurveyStore.getState().reorderQuestions(currentSurvey.id, questions.map((q) => q.id));
-    }
+    useSurveyStore.getState().moveQuestionUp(currentSurvey.id, questionId);
   };
 
   const handleMoveDown = (questionId) => {
-    const questions = currentSurvey.questions || [];
-    const idx = questions.findIndex((q) => q.id === questionId);
-    if (idx >= 0 && idx < questions.length - 1) {
-      [questions[idx], questions[idx + 1]] = [questions[idx + 1], questions[idx]];
-      useSurveyStore.getState().reorderQuestions(currentSurvey.id, questions.map((q) => q.id));
-    }
+    useSurveyStore.getState().moveQuestionDown(currentSurvey.id, questionId);
   };
 
   const handlePreview = () => {

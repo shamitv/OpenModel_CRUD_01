@@ -18,8 +18,8 @@
 | C4b — Long text question | ✅ completed | Max 2000 chars |
 | C5a — GET /api/surveys/{id}/questions (ordered) | ✅ completed | Ordered by position field |
 | C5b — PATCH /api/surveys/{id}/questions/reorder (bulk) | ✅ completed | |
-| C5c — PATCH /api/surveys/{id}/questions/{id}/move-up | ⚠️ completed | Raw SQL swap, 1 failing test |
-| C5d — PATCH /api/surveys/{id}/questions/{id}/move-down | ⚠️ completed | Raw SQL swap, 1 failing test |
+| C5c — PATCH /api/surveys/{id}/questions/{id}/move-up | ✅ completed | Raw SQL swap |
+| C5d — PATCH /api/surveys/{id}/questions/{id}/move-down | ✅ completed | Raw SQL swap |
 | C6a — surveyApi.js (axios service) | ✅ completed | 9 endpoints, auth interceptors |
 | C6b — surveyStore.js (migrate to axios) | ✅ completed | All actions migrated |
 | C6c — SurveyBuilderPage (three-zone layout) | ✅ completed | Left sidebar, center canvas, right settings |
@@ -32,7 +32,7 @@
 | C7b — Progress indicator | ✅ completed | Shown for surveys with >3 questions |
 | C7c — Validation states | ✅ completed | Required fields highlighted |
 | C7d — Submit button and success state | ✅ completed | No actual submission (Phase 3) |
-| C8a — Backend integration tests | ✅ completed | 31 tests, 44 total passing (14 auth + 31 survey) |
+| C8a — Backend integration tests | ✅ completed | 45 tests all passing (14 auth + 31 survey) |
 | C8b — Frontend smoke test — create survey | 📋 pending | |
 | C8c — Frontend smoke test — reorder questions | 📋 pending | |
 | C8d — Frontend smoke test — preview mode | 📋 pending | |

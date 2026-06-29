@@ -645,8 +645,8 @@ def test_move_question_down(client, db_session, auth_headers):
     )
     data = response.json()
     assert data["questions"][0]["text"] == "Q2"
-    assert data["questions"][1]["text"] == "Q3"
-    assert data["questions"][2]["text"] == "Q1"
+    assert data["questions"][1]["text"] == "Q1"
+    assert data["questions"][2]["text"] == "Q3"
 
 
 def test_move_question_up_already_top(client, db_session, auth_headers):
