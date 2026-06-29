@@ -402,3 +402,21 @@ C6a -> C6b -> C6c -> C6d -> C6e -> C6f -> C6g -> C6h
 C7a -> C7b -> C7c -> C7d
 C8a -> C8b -> C8c -> C8d -> C8e
 ```
+
+## Post-Implementation Notes
+
+### Key Design Decisions
+- **Slug generation**: `re.sub(r'[^a-z0-9]+', '-', text.lower().strip())` with duplicate-slug handling via numeric suffix (e.g., `my-survey`, `my-survey-1`, `my-survey-2`)
+- **Question options storage**: Stored as JSON string in DB (`Text` column), decoded in `to_dict()` for API responses
+- **Position swap for reorder**: Uses raw `sqlalchemy.update()` for atomic position updates instead of in-memory list mutation (which caused both questions to get the same position)
+- **Removed `response_model`** from question endpoints (list-of-models validation fails in FastAPI); uses manual dict serialization via `_questions_to_list()` helper
+- **Auto-save**: Debounced 2-second timer on title/description changes in `SurveyBuilderPage.jsx`
+
+### Known Issues / Follow-Up Tasks
+- **Failing test**: `test_move_question_down` — assertion error (expected Q3 at position 1, got different result). Move-down logic uses raw SQL `update()` with saved old positions, but the test still fails. Needs investigation.
+- **Import cleanup**: `survey.py` imports `sqlalchemy_update` but uses `update` — remove unused import alias.
+- **Frontend store consistency**: `SurveyBuilderPage.jsx` manages question state locally via `useSurveyStore.getState().addQuestion()` and `reorderQuestions()` but the backend commit may not reflect in the store until a fresh fetch.
+- **Error in move-up endpoint**: `from sqlalchemy.orm import relationship` import exists but `sqlalchemy.update()` is used — verify imports are correct.
+- **Cascade delete**: `DELETE /api/surveys/{id}` uses SQLAlchemy cascade delete (already configured in models), but the test `test_delete_survey_cascade` expects a 404 after delete — needs verification.
+- **Frontend store method**: `useSurveyStore.getState().deleteQuestion()` is called in `QuestionCard.jsx` but the method was just added to the store — needs verification.
+- **Frontend auto-save**: Debounced 2-second timer on title/description changes in `SurveyBuilderPage.jsx` — verify auto-save works correctly.

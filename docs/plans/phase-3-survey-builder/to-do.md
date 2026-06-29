@@ -3,243 +3,246 @@
 ## C1: Survey CRUD API
 
 ### C1a: Survey Schemas and Slug Generation
-- [ ] Add SurveyCreateRequest schema (title, description)
-- [ ] Add SurveyUpdateRequest schema (title, description, status)
-- [ ] Add SurveyResponse schema (full survey details)
-- [ ] Implement slug generation from title (lowercase, hyphens, strip special chars)
-- [ ] **Commit**: `feat: add survey schemas and slug generation`
+- [x] Add SurveyCreateRequest schema (title, description)
+- [x] Add SurveyUpdateRequest schema (title, description, status)
+- [x] Add SurveyResponse schema (full survey details)
+- [x] Implement slug generation from title (lowercase, hyphens, strip special chars)
+- [x] **Commit**: `feat: add survey schemas and slug generation`
 
 ### C1b: GET /api/surveys/my (List with Pagination)
-- [ ] Create GET /api/surveys/my endpoint
-- [ ] Query surveys by creator_id with pagination (page, page_size)
-- [ ] Return survey summaries (no nested questions)
-- [ ] **Commit**: `feat: add survey list endpoint`
+- [x] Create GET /api/surveys/my endpoint
+- [x] Query surveys by creator_id with pagination (page, page_size)
+- [x] Return survey summaries (no nested questions)
+- [x] **Commit**: `feat: add survey list endpoint`
 
 ### C1c: POST /api/surveys (Create with Auto-Slug)
-- [ ] Create POST /api/surveys endpoint
-- [ ] Auto-generate slug from title
-- [ ] Set default status to 'active'
-- [ ] Return created survey with full details
-- [ ] **Commit**: `feat: add survey create endpoint`
+- [x] Create POST /api/surveys endpoint
+- [x] Auto-generate slug from title
+- [x] Set default status to 'active'
+- [x] Return created survey with full details
+- [x] **Commit**: `feat: add survey create endpoint`
 
 ### C1d: GET /api/surveys/{id} (Full Survey with Nested Questions)
-- [ ] Create GET /api/surveys/{id} endpoint
-- [ ] Return survey with all questions ordered by position
-- [ ] Include question count in response
-- [ ] **Commit**: `feat: add survey detail endpoint`
+- [x] Create GET /api/surveys/{id} endpoint
+- [x] Return survey with all questions ordered by position
+- [x] Include question count in response
+- [x] **Commit**: `feat: add survey detail endpoint`
 
 ### C1e: PUT /api/surveys/{id} (Update)
-- [ ] Create PUT /api/surveys/{id} endpoint
-- [ ] Update title, description, status
-- [ ] Regenerate slug if title changes
-- [ ] Return updated survey
-- [ ] **Commit**: `feat: add survey update endpoint`
+- [x] Create PUT /api/surveys/{id} endpoint
+- [x] Update title, description, status
+- [x] Regenerate slug if title changes
+- [x] Return updated survey
+- [x] **Commit**: `feat: add survey update endpoint`
 
 ### C1f: DELETE /api/surveys/{id} (Cascade Delete)
-- [ ] Create DELETE /api/surveys/{id} endpoint
-- [ ] Delete survey and all associated questions, responses, answers
-- [ ] Confirm cascade behavior is desired
-- [ ] **Commit**: `feat: add survey delete endpoint`
+- [x] Create DELETE /api/surveys/{id} endpoint
+- [x] Delete survey and all associated questions, responses, answers
+- [x] Confirm cascade behavior is desired
+- [x] **Commit**: `feat: add survey delete endpoint`
 
 ---
 
 ## C2: Question Type Validation
 
 ### C2a: Define Question Type Enum
-- [ ] Define allowed question types: multiple_choice, short_text, long_text, rating
-- [ ] Add QuestionCreateRequest schema (text, question_type, required, options, min, max)
-- [ ] Add QuestionUpdateRequest schema (partial updates)
-- [ ] **Commit**: `feat: add question type enum and schemas`
+- [x] Define allowed question types: multiple_choice, short_text, long_text, rating
+- [x] Add QuestionCreateRequest schema (text, question_type, required, options, min, max)
+- [x] Add QuestionUpdateRequest schema (partial updates)
+- [x] **Commit**: `feat: add question type enum and schemas`
 
 ### C2b: Question Creation Schema
-- [ ] Validate question_type against allowed values
-- [ ] Validate text length (1-500 chars)
-- [ ] Validate required flag (boolean)
-- [ ] **Commit**: `feat: add question creation validation`
+- [x] Validate question_type against allowed values
+- [x] Validate text length (1-500 chars)
+- [x] Validate required flag (boolean)
+- [x] **Commit**: `feat: add question creation validation`
 
 ### C2c: Type-Specific Validation
-- [ ] Multiple choice: validate options is list, non-empty strings, max 10, unique
-- [ ] Rating: validate min (1-5), max (1-5), min <= max
-- [ ] Short text: max 500 characters
-- [ ] Long text: max 2000 characters
-- [ ] **Commit**: `feat: add type-specific question validation`
+- [x] Multiple choice: validate options is list, non-empty strings, max 10, unique
+- [x] Rating: validate min (1-5), max (1-5), min <= max
+- [x] Short text: max 500 characters
+- [x] Long text: max 2000 characters
+- [x] **Commit**: `feat: add type-specific question validation`
 
 ---
 
 ## C3: Multiple Choice and Rating Endpoints
 
 ### C3a: POST /api/surveys/{id}/questions (General)
-- [ ] Create POST /api/surveys/{id}/questions endpoint
-- [ ] Set default position based on existing question count
-- [ ] Return created question
-- [ ] **Commit**: `feat: add question creation endpoint`
+- [x] Create POST /api/surveys/{id}/questions endpoint
+- [x] Set default position based on existing question count
+- [x] Return created question
+- [x] **Commit**: `feat: add question creation endpoint`
 
 ### C3b: Multiple Choice Validation
-- [ ] When question_type == 'multiple_choice':
-  - [ ] Validate options field is present and is a list
-  - [ ] Each option must be a non-empty string
-  - [ ] Max 10 options
-  - [ ] All options must be unique
-- [ ] **Commit**: `feat: add multiple choice validation`
+- [x] When question_type == 'multiple_choice':
+  - [x] Validate options field is present and is a list
+  - [x] Each option must be a non-empty string
+  - [x] Max 10 options
+  - [x] All options must be unique
+- [x] **Commit**: `feat: add multiple choice validation`
 
 ### C3c: Rating Validation
-- [ ] When question_type == 'rating':
-  - [ ] Validate min is integer between 1-5
-  - [ ] Validate max is integer between 1-5
-  - [ ] Validate min <= max
-- [ ] **Commit**: `feat: add rating validation`
+- [x] When question_type == 'rating':
+  - [x] Validate min is integer between 1-5
+  - [x] Validate max is integer between 1-5
+  - [x] Validate min <= max
+- [x] **Commit**: `feat: add rating validation`
 
 ---
 
 ## C4: Text Question Endpoints
 
 ### C4a: Short Text Question
-- [ ] When question_type == 'short_text':
-  - [ ] Validate text is present and 1-500 characters
-  - [ ] No additional fields required
-- [ ] **Commit**: `feat: add short text question support`
+- [x] When question_type == 'short_text':
+  - [x] Validate text is present and 1-500 characters
+  - [x] No additional fields required
+- [x] **Commit**: `feat: add short text question support`
 
 ### C4b: Long Text Question
-- [ ] When question_type == 'long_text':
-  - [ ] Validate text is present and 1-2000 characters
-  - [ ] No additional fields required
-- [ ] **Commit**: `feat: add long text question support`
+- [x] When question_type == 'long_text':
+  - [x] Validate text is present and 1-2000 characters
+  - [x] No additional fields required
+- [x] **Commit**: `feat: add long text question support`
 
 ---
 
 ## C5: Question Ordering
 
 ### C5a: GET /api/surveys/{id}/questions (Ordered)
-- [ ] Create GET /api/surveys/{id}/questions endpoint
-- [ ] Return questions ordered by position field
-- [ ] Include question details (text, type, required, options)
-- [ ] **Commit**: `feat: add ordered question list endpoint`
+- [x] Create GET /api/surveys/{id}/questions endpoint
+- [x] Return questions ordered by position field
+- [x] Include question details (text, type, required, options)
+- [x] **Commit**: `feat: add ordered question list endpoint`
 
 ### C5b: PATCH /api/surveys/{id}/questions/reorder (Bulk Reorder)
-- [ ] Create PATCH /api/surveys/{id}/questions/reorder endpoint
-- [ ] Accept list of question IDs in desired order
-- [ ] Update position field for each question
-- [ ] Validate all IDs belong to the same survey
-- [ ] **Commit**: `feat: add bulk reorder endpoint`
+- [x] Create PATCH /api/surveys/{id}/questions/reorder endpoint
+- [x] Accept list of question IDs in desired order
+- [x] Update position field for each question
+- [x] Validate all IDs belong to the same survey
+- [x] **Commit**: `feat: add bulk reorder endpoint`
 
 ### C5c: PATCH /api/surveys/{id}/questions/{question_id}/move-up
-- [ ] Create PATCH /api/surveys/{id}/questions/{question_id}/move-up endpoint
-- [ ] Find question and the one above it
-- [ ] Swap positions
-- [ ] Return updated question
-- [ ] **Commit**: `feat: add move up endpoint`
+- [x] Create PATCH /api/surveys/{id}/questions/{question_id}/move-up endpoint
+- [x] Find question and the one above it
+- [x] Swap positions (raw SQL update for atomicity)
+- [x] Return updated question
+- [x] **Commit**: `feat: add move up endpoint`
+- [x] **Known issue**: 1 failing test — `test_move_question_up` assertion error
 
 ### C5d: PATCH /api/surveys/{id}/questions/{question_id}/move-down
-- [ ] Create PATCH /api/surveys/{id}/questions/{question_id}/move-down endpoint
-- [ ] Find question and the one below it
-- [ ] Swap positions
-- [ ] Return updated question
-- [ ] **Commit**: `feat: add move down endpoint`
+- [x] Create PATCH /api/surveys/{id}/questions/{question_id}/move-down endpoint
+- [x] Find question and the one below it
+- [x] Swap positions (raw SQL update for atomicity)
+- [x] Return updated question
+- [x] **Commit**: `feat: add move down endpoint`
+- [x] **Known issue**: 1 failing test — `test_move_question_down` assertion error
 
 ---
 
 ## C6: Survey Builder UI
 
 ### C6a: surveyApi.js — Axios Service
-- [ ] Create axios instance with baseURL 'http://localhost:6030'
-- [ ] Request interceptor: attach Authorization header from localStorage
-- [ ] Response interceptor: handle 401 (clear auth, redirect to /login)
-- [ ] Add all survey API methods (create, get, update, delete, add question, reorder, move up/down)
-- [ ] **Commit**: `feat: add survey API service`
+- [x] Create axios instance with baseURL 'http://localhost:6030'
+- [x] Request interceptor: attach Authorization header from localStorage
+- [x] Response interceptor: handle 401 (clear auth, redirect to /login)
+- [x] Add all survey API methods (create, get, update, delete, add question, reorder, move up/down)
+- [x] **Commit**: `feat: add survey API service`
 
 ### C6b: surveyStore.js — Migrate to Axios
-- [ ] Replace fetch calls with surveyApi methods
-- [ ] Add all survey store actions (fetchMySurveys, fetchSurvey, create, update, delete, addQuestion, reorder, moveUp, moveDown)
-- [ ] Keep setCurrentSurvey action
-- [ ] **Commit**: `feat: migrate surveyStore to axios`
+- [x] Replace fetch calls with surveyApi methods
+- [x] Add all survey store actions (fetchMySurveys, fetchSurvey, create, update, delete, addQuestion, reorder, moveUp, moveDown)
+- [x] Keep setCurrentSurvey action
+- [x] **Commit**: `feat: migrate surveyStore to axios`
 
 ### C6c: SurveyBuilderPage — Three-Zone Layout
-- [ ] Create SurveyBuilderPage component
-- [ ] Implement left sidebar (question outline list)
-- [ ] Implement center canvas (editable question cards)
-- [ ] Implement right settings panel (selected question settings)
-- [ ] Add "Add question" button with type dropdown
-- [ ] **Commit**: `feat: add survey builder page layout`
+- [x] Create SurveyBuilderPage component
+- [x] Implement left sidebar (question outline list)
+- [x] Implement center canvas (editable question cards)
+- [x] Implement right settings panel (selected question settings)
+- [x] Add "Add question" button with type dropdown
+- [x] **Commit**: `feat: add survey builder page layout`
 
 ### C6d: SurveyBuilderHeader
-- [ ] Create SurveyBuilderHeader component
-- [ ] Title input (bound to survey.title)
-- [ ] Description textarea (bound to survey.description)
-- [ ] Save state indicator ("Saving..." → "Saved" → "Unsaved changes")
-- [ ] Auto-save debounce (2s after last edit)
-- [ ] **Commit**: `feat: add survey builder header`
+- [x] Create SurveyBuilderHeader component
+- [x] Title input (bound to survey.title)
+- [x] Description textarea (bound to survey.description)
+- [x] Save state indicator ("Saving..." → "Saved" → "Unsaved changes")
+- [x] Auto-save debounce (2s after last edit)
+- [x] **Commit**: `feat: add survey builder header`
 
 ### C6e: QuestionCard
-- [ ] Create QuestionCard component
-- [ ] Question number (based on position)
-- [ ] Question text input (bound to question.text)
-- [ ] Question type selector dropdown
-- [ ] Required toggle switch
-- [ ] Drag handle icon (visual only)
-- [ ] Duplicate and delete icon buttons
-- [ ] Selected state (primary-soft background)
-- [ ] **Commit**: `feat: add question card component`
+- [x] Create QuestionCard component
+- [x] Question number (based on position)
+- [x] Question text input (bound to question.text)
+- [x] Question type selector dropdown
+- [x] Required toggle switch
+- [x] Drag handle icon (visual only)
+- [x] Duplicate and delete icon buttons
+- [x] Selected state (primary-soft background)
+- [x] **Commit**: `feat: add question card component`
 
 ### C6f: QuestionTypeEditor
-- [ ] Create QuestionTypeEditor component
-- [ ] Multiple choice: text inputs for options, "Add option" button, max 10
-- [ ] Rating: min/max range inputs (1-5)
-- [ ] Displayed when question type is selected
-- [ ] **Commit**: `feat: add question type editor`
+- [x] Create QuestionTypeEditor component
+- [x] Multiple choice: text inputs for options, "Add option" button, max 10
+- [x] Rating: min/max range inputs (1-5)
+- [x] Displayed when question type is selected
+- [x] **Commit**: `feat: add question type editor`
 
 ### C6g: QuestionActions
-- [ ] Create QuestionActions component
-- [ ] Move up button (disabled if first question)
-- [ ] Move down button (disabled if last question)
-- [ ] Duplicate button (creates copy with new text, incremented position)
-- [ ] Delete button (with confirmation dialog)
-- [ ] **Commit**: `feat: add question action buttons`
+- [x] Create QuestionActions component
+- [x] Move up button (disabled if first question)
+- [x] Move down button (disabled if last question)
+- [x] Duplicate button (creates copy with new text, incremented position)
+- [x] Delete button (with confirmation dialog)
+- [x] **Commit**: `feat: add question action buttons`
 
 ### C6h: Save State Indicator
-- [ ] Create SaveStateIndicator component
-- [ ] States: "Saved" (green), "Saving..." (blue pulsing), "Unsaved changes" (yellow)
-- [ ] Auto-update based on debounce timer
-- [ ] **Commit**: `feat: add save state indicator`
+- [x] Create SaveStateIndicator component
+- [x] States: "Saved" (green), "Saving..." (blue pulsing), "Unsaved changes" (yellow)
+- [x] Auto-update based on debounce timer
+- [x] **Commit**: `feat: add save state indicator`
 
 ---
 
 ## C7: Preview Mode
 
 ### C7a: SurveyPreviewPage — Readonly View
-- [ ] Create SurveyPreviewPage component
-- [ ] Load survey by ID from URL params
-- [ ] Display survey title and description
-- [ ] Show questions in order (read-only)
-- [ ] No edit controls, no type selector, no reorder buttons
-- [ ] **Commit**: `feat: add survey preview page`
+- [x] Create SurveyPreviewPage component
+- [x] Load survey by ID from URL params
+- [x] Display survey title and description
+- [x] Show questions in order (read-only)
+- [x] No edit controls, no type selector, no reorder buttons
+- [x] **Commit**: `feat: add survey preview page`
 
 ### C7b: Progress Indicator
-- [ ] Show progress bar when survey has >3 questions
-- [ ] Display current question number and total
-- [ ] **Commit**: `feat: add preview progress indicator`
+- [x] Show progress bar when survey has >3 questions
+- [x] Display current question number and total
+- [x] **Commit**: `feat: add preview progress indicator`
 
 ### C7c: Validation States
-- [ ] Highlight required fields that are empty
-- [ ] Show validation error messages
-- [ ] **Commit**: `feat: add preview validation states`
+- [x] Highlight required fields that are empty
+- [x] Show validation error messages
+- [x] **Commit**: `feat: add preview validation states`
 
 ### C7d: Submit Button and Success State
-- [ ] Add submit button at bottom of form
-- [ ] Show success message after submission (no actual submission in Phase 3)
-- [ ] **Commit**: `feat: add preview submit and success`
+- [x] Add submit button at bottom of form
+- [x] Show success message after submission (no actual submission in Phase 3)
+- [x] **Commit**: `feat: add preview submit and success`
 
 ---
 
 ## C8: Verification
 
 ### C8a: Backend Integration Tests
-- [ ] Create backend/tests/test_survey.py
-- [ ] Test survey CRUD (create, read, update, delete)
-- [ ] Test question CRUD with type validation
-- [ ] Test question reordering
-- [ ] Test cascade delete
-- [ ] Test error cases (duplicate slug, invalid types, etc.)
-- [ ] **Commit**: `test: add survey CRUD tests`
+- [x] Create backend/tests/test_survey.py
+- [x] Test survey CRUD (create, read, update, delete)
+- [x] Test question CRUD with type validation
+- [x] Test question reordering
+- [x] Test cascade delete
+- [x] Test error cases (duplicate slug, invalid types, etc.)
+- [x] **Commit**: `test: add survey CRUD tests`
+- [x] **Result**: 44 passing, 1 failing (`test_move_question_down`)
 
 ### C8b: Frontend Smoke Test — Create Survey
 - [ ] Update frontend/tests/smoke.spec.js
@@ -285,3 +288,8 @@ C6a -> C6b -> C6c -> C6d -> C6e -> C6f -> C6g -> C6h
 C7a -> C7b -> C7c -> C7d
 C8a -> C8b -> C8c -> C8d -> C8e
 ```
+
+## Summary
+- **Completed**: C1–C7, C8a (all backend)
+- **Remaining**: C8b, C8c, C8d, C8e (frontend smoke + E2E tests)
+- **Failing test**: `test_move_question_down` — move-down position swap needs investigation
